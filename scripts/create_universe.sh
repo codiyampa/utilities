@@ -131,13 +131,14 @@ TSERVER_CONF_RF_CMD="echo '--replication_factor=${RF}' >> ${YB_HOME}/tserver/con
 MASTER_CONF_DB_INIT_CMD="echo '--use_initial_sys_catalog_snapshot' >> ${YB_HOME}/master/conf/server.conf"
 MASTER_CONF_MEM_CMD="echo '--default_memory_limit_to_ram_ratio=0.35' >> ${YB_HOME}/master/conf/server.conf"
 TSERVER_CONF_MEM_CMD="echo '--default_memory_limit_to_ram_ratio=0.6' >> ${YB_HOME}/tserver/conf/server.conf"
+TSERVER_CONF_CQL_AUTH_CMD="echo '--use_cassandra_authentication true' >> ${YB_HOME}/tserver/conf/server.conf"
 
 for node in $SSH_IPS; do
   ssh -q -o "StrictHostKeyChecking no" -i "${SSH_KEY_PATH}" \
     "${SSH_USER}"@"${node}" "$ARCHIVE_MASTER_CONF ; $ARCHIVE_TSERVER_CONF; \
     $MASTER_DATA_DIRS_CMD; $MASTER_CONF_CMD ; $TSERVER_DATA_DIRS_CMD; \
     $TSERVER_CONF_CMD ; $MASTER_CONF_RF_CMD ; $TSERVER_CONF_RF_CMD; \
-    $MASTER_CONF_DB_INIT_CMD; $MASTER_CONF_MEM_CMD; $TSERVER_CONF_MEM_CMD;"
+    $MASTER_CONF_DB_INIT_CMD; $MASTER_CONF_MEM_CMD; $TSERVER_CONF_MEM_CMD; $TSERVER_CONF_CQL_AUTH_CMD;"
 done
 
 ###############################################################################
@@ -174,13 +175,13 @@ done
 # Setup YSQL proxies across all nodes
 ###############################################################################
 echo "Enabling YSQL..."
-TSERVER_YSQL_PROXY_CMD="echo '--start_pgsql_proxy' >> ${YB_HOME}/tserver/conf/server.conf"
+# TSERVER_YSQL_PROXY_CMD="echo '--start_pgsql_proxy' >> ${YB_HOME}/tserver/conf/server.conf"
 node_idx=0
 for node_idx in "${!SSH_IPS_array[@]}"; do
-  TSERVER_PGSQL_PROXY="echo '--pgsql_proxy_bind_address=0.0.0.0:5433' >> ${YB_HOME}/tserver/conf/server.conf"
+  # TSERVER_PGSQL_PROXY="echo '--pgsql_proxy_bind_address=0.0.0.0:5433' >> ${YB_HOME}/tserver/conf/server.conf"
   TSERVER_CQL_PROXY="echo '--cql_proxy_bind_address=0.0.0.0:9042' >> ${YB_HOME}/tserver/conf/server.conf"
   ssh -q -o "StrictHostKeyChecking no" -i "${SSH_KEY_PATH}" \
-    "${SSH_USER}"@"${SSH_IPS_array[$node_idx]}" "$TSERVER_YSQL_PROXY_CMD ; $TSERVER_PGSQL_PROXY ; $TSERVER_CQL_PROXY"
+    "${SSH_USER}"@"${SSH_IPS_array[$node_idx]}" "$TSERVER_CQL_PROXY"
 done
 
 ###############################################################################

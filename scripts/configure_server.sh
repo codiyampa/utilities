@@ -33,7 +33,5 @@ firewall-cmd --permanent --add-port=7100/tcp
 firewall-cmd --permanent --add-port=9100/tcp
 firewall-cmd --permanent --add-port=9000/tcp
 firewall-cmd --permanent --add-port=7000/tcp
-firewall-cmd --permanent --add-port=6379/tcp
 firewall-cmd --permanent --add-port=9042/tcp
-firewall-cmd --permanent --add-port=5433/tcp
 firewall-cmd --reload
