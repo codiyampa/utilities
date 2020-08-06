@@ -57,6 +57,10 @@ case "${CLOUD_NAME}" in
     NODEIP="$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")"
     ;;
 
+  'Vultr')
+    NODEIP="ip addr | grep -Eo 'inet (addr:)?10\.([0-9]*\.){2}[0-9]*'"
+    ;;
+
   *)
     echo "Invalid Cloud Name"
     exit 1

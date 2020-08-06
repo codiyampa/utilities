@@ -131,7 +131,7 @@ TSERVER_CONF_RF_CMD="echo '--replication_factor=${RF}' >> ${YB_HOME}/tserver/con
 MASTER_CONF_DB_INIT_CMD="echo '--use_initial_sys_catalog_snapshot' >> ${YB_HOME}/master/conf/server.conf"
 MASTER_CONF_MEM_CMD="echo '--default_memory_limit_to_ram_ratio=0.35' >> ${YB_HOME}/master/conf/server.conf"
 TSERVER_CONF_MEM_CMD="echo '--default_memory_limit_to_ram_ratio=0.6' >> ${YB_HOME}/tserver/conf/server.conf"
-TSERVER_CONF_CQL_AUTH_CMD="echo '--use_cassandra_authentication true' >> ${YB_HOME}/tserver/conf/server.conf"
+TSERVER_CONF_CQL_AUTH_CMD="echo '--use_cassandra_authentication=true' >> ${YB_HOME}/tserver/conf/server.conf"
 
 for node in $SSH_IPS; do
   ssh -q -o "StrictHostKeyChecking no" -i "${SSH_KEY_PATH}" \
