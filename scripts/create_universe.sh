@@ -45,6 +45,9 @@ SSH_KEY_PATH=$8
 YB_HOME=/home/${SSH_USER}/yugabyte-db
 YB_MASTER_ADDRESSES=""
 
+# Set permissions of SSH key to 600
+chmod 600 ${SSH_KEY_PATH}
+
 num_zones="$( (IFS=$'\n';sort <<< "${zone_array[*]}") | uniq -c | wc -l )"
 IFS=" " read -r -a SSH_IPS_array <<< "$SSH_IPS"
 
